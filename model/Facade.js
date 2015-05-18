@@ -8,7 +8,7 @@ function _getAllUsers(callback){
             return console.log(err);
         }
         else{
-            callback( Users );
+           return callback(null, Users );
         }
     });
 }
@@ -33,18 +33,19 @@ function _getUser(id, callback){
            return console.log(err);
        }
         else {
-           callback( user );
+          return callback(null, user);
        }
     });
 }
 
 function _getUserByUsername(username, callback){
-    db.User.find({userName: username}, function(err, user){
+    db.User.findOne({userName: username}, function(err, user){
         if(err) {
             return console.log(err);
         }
         else {
-            callback( user );
+
+            return callback(null, user);
         }
     });
 }
@@ -54,11 +55,11 @@ function _getFlight(departurePort, landingPort, date, callback){
         url: "http://localhost:8084/CA5/api/flights/" + departurePort + "/" + landingPort + "/" + date,
         method: 'GET',
         json: true
-    }
+    };
 
     request(options, function(error, response, body){
         if(!error && response.statusCode === 200){
-            return callback(body);
+            return callback(null, body);
         }
         console.log(error + " : " + JSON.stringify(body))
     });
@@ -69,11 +70,11 @@ function _getAllFlights(callback){
         url: "http://localhost:8084/CA5/api/flights",
         method: 'GET',
         json: true
-    }
+    };
 
     request(options, function(error, response, body){
         if(!error && response.statusCode === 200){
-            return callback(body);
+            return callback(null, body);
         }
         console.log(error + " : " + JSON.stringify(body))
     });
@@ -83,6 +84,9 @@ function _getTicketInfo(userName, callback){
     db.User.findOne({'userName': userName}, function(err, user){
         var index = 0;
         var ticketList = [];
+        if(user.tickets.length === 0){
+            callback(null, ticketList)
+        }
         for(var i = 0; i < user.tickets.length; i++){
             db.Ticket.findById(user.tickets[i], function(err, ticket){
                 ticketList.push(ticket);
@@ -102,7 +106,6 @@ function _createUser(UserJson, callback){
             return callback(err);
         }
         else{
-            console.log(User);
             return callback(null, User)
         }
     });
@@ -128,8 +131,10 @@ function _createTicketAndAddToUser(ticketJson, userName, callback){
                 }
                 user.tickets.push(ticket.id);
                 user.save(function(err){
-                    console.log(user);
+
+                    return callback(null, ticket)
                 })
+
             })
         }
 
