@@ -9,7 +9,7 @@ var path = __dirname.substr(0,__dirname.lastIndexOf("\\"));  //Remove the routes
 
 
 router.get('/home', function(req, res) {
-    res.render('home');
+    res.render('home',{"welcome" : "Welcome ! Here you will find the cheapest flights, from all over the world. ", "msg": "What are you doing here ? Go sign up for free, or search for your next cheap vacation !"});
 });
 
 router.get('/user', function(req, res) {
@@ -18,6 +18,11 @@ router.get('/user', function(req, res) {
 
 router.get('/login', function(req, res, next) {
     res.render('login', {loginerror : req.session.loginerror});
+});
+
+router.get('/logoff', function(req, res, next) {
+    req.session.destroy();
+    res.redirect('/');
 });
 
 router.get('/findflights', function(req, res, next) {

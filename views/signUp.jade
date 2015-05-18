@@ -1,20 +1,26 @@
 //
-   Created by Kasper on 09-04-2015.
+             Created by Kasper on 09-04-2015.
 extends layout
 block content
-    h1 Sign up
-    br
-    form(method="post" action="/")
-        input(name="createFirstName" placeholder="firstname")
-        br
-        input(name="createLastName" placeholder="lastname")
-        br
-        input(name="createEmail" placeholder="email")
-        br
-        input(name="createPhone" placeholder="phone")
-        br
-        input(name="createUserName" placeholder="username")
-        br
-        input(name="createPassword" placeholder="password")
-        br
-        input(type="submit")
+h1 Sign up
+br
+form(method="post" action="/")
+input(name="createUserName" placeholder="userName")
+br
+input(name="createPassword" placeholder="password")
+br
+input(name="createFirstName" placeholder="firstName")
+br
+input(name="createLastName" placeholder="lastName")
+br
+input(name="createEmail" placeholder="email")
+br
+input(name="createStreet" placeholder="street")
+br
+input(name="createCity" placeholder="city")
+br
+input(name="createZip" placeholder="zip")
+br
+input(name="createCountry" placeholder="country")
+br
+input(type="submit")

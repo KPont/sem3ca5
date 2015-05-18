@@ -1,50 +1,94 @@
 var mongoose = require( 'mongoose' );
-var Facade = require("../model/Facade");
 
-//Uncomment if you are going to use a local instance or add connection details for your account on MongoLab
-var dbURI = 'mongodb://ca3:ca3@ds061631.mongolab.com:61631/ca3sem3';
+/*
+
+ Note:
+ To this test project as it is:
+
+ Start your MongoDB database.
+ Start mongo.exe and do:
+ use testdb
+ db.testusers.insert({userName : "Lars", email :"lam@cphbusiness.dk",pw: "test",created : new Date()})
+ db.testusers.insert({userName : "Henrik", email :"hsty@cphbusiness.dk",pw: "test",created : new Date()})
+ db.testusers.insert({userName : "Tobias", email :"tog@cphbusiness.dk",pw: "test",created : new Date()})
+ db.testusers.insert({userName : "Anders", email :"aka@cphbusiness.dk",pw: "test",created : new Date()})
+
+ */
+var dbURI;
+
+//This is set by the backend tests
+if( typeof global.TEST_DATABASE != "undefined" ) {
+    dbURI = global.TEST_DATABASE;
+}
+else{
+    dbURI = 'mongodb://ca5sem3:ca5sem3@ds063909.mongolab.com:63909/ca5sem3';
+}
 
 mongoose.connect(dbURI);
 
 mongoose.connection.on('connected', function () {
-  console.log('Mongoose connected to ' + dbURI);
-    mongoose.connection.db.dropDatabase(function(err, result) {
-        if(err){
-            console.log(err);
-        }
-        else{
-            console.log('db Dropped');
-        }
+    console.log('Mongoose connected to ' + dbURI);
+});
+
+mongoose.connection.on('error',function (err) {
+    global.mongo_error = "Not Connected to the Database";
+    console.log('Mongoose connection error: ' + err);
+});
+
+mongoose.connection.on('disconnected', function () {
+    console.log('Mongoose disconnected');
+});
+
+process.on('SIGINT', function() {
+    mongoose.connection.close(function () {
+        console.log('Mongoose disconnected through app termination');
+        process.exit(0);
     });
 });
 
 
-mongoose.connection.on('error',function (err) {
-  console.log('Mongoose connection error: ' + err);
+/** User SCHEMA **/
+/** Replace this Schema with your own(s) **/
+
+
+
+var userSchema = new mongoose.Schema({
+    userName : {type: String, unique: true},
+    password : String,
+    firstName : String,
+    lastName : String,
+    email : String,
+    street : String,
+    city : String,
+    zip : Number,
+    country : String,
+    tickets : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ticket'
+    }]
 });
 
-mongoose.connection.on('disconnected', function () {
-  console.log('Mongoose disconnected');
+var User = mongoose.model( 'User', userSchema);
+
+var airlineSchema = mongoose.Schema({
+    airlineName : String,
+    url : String
 });
 
-process.on('SIGINT', function() {
-  mongoose.connection.close(function () {
-    console.log('Mongoose disconnected through app termination');
-    process.exit(0);
-  });
+var Airline = mongoose.model( 'Airline', airlineSchema);
+
+var ticketSchema = mongoose.Schema({
+    seat : String,
+    date : String,
+    departure : String,
+    arrival : String
 });
 
-var UserSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    userName: {type: String, unique: true},
-    email: String,
-    phone: Number,
-    password: String
-});
+var Ticket = mongoose.model( 'ticket', ticketSchema);
 
 
-var User = mongoose.model('User', UserSchema);
 
 exports.User = User;
+exports.Airline = Airline;
+exports.Ticket = Ticket;
 

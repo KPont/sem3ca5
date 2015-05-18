@@ -36,15 +36,18 @@ app.use('/api', api)
 
 
 app.use(function(req, res, next){
+    var newUser = req.body.createUserName;
+    var newPw = req.body.createPassword;
     var newFName = req.body.createFirstName;
     var newLName = req.body.createLastName;
     var newEmail = req.body.createEmail;
-    var newPhone = req.body.createPhone;
-    var newUser = req.body.createUserName;
-    var newPw = req.body.createPassword;
+    var newStreet = req.body.createStreet;
+    var newCity = req.body.createCity;
+    var newZip = req.body.createZip;
+    var newCountry = req.body.createCountry;
     console.log(newEmail);
     if(typeof(newFName) !== "undefined"){
-        facade.createUser({"firstName" : newFName, "lastName" : newLName, "userName" : newUser, "email" : newEmail, "phone" : newPhone, "password" : newPw });
+        facade.createUser({"userName" : newUser, "password" : newPw, "firstName" : newFName, "lastName" : newLName, "email" : newEmail, "street" : newStreet, "city" : newCity, "zip" : newZip, "country" : newCountry });
         res.redirect("/api/home");
         return next();
     }
