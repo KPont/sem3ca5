@@ -13,12 +13,4 @@ describe('User', function(){
     })
 });
 
-describe('Quote', function(){
-    describe('#createQuote()', function(){
-        it('should save without error', function(done){
-            Facade.createQuote({"topic":"funny","author:":"MIG!",reference:"Alex",quote:"bedst!"});
-            done();
-        })
-    })
-});
 

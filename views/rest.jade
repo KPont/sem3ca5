@@ -1,0 +1,15 @@
+h4 REST-API
+    table(border="1" )
+        thead
+        th Method
+        th URL
+        th JSON
+        th Example
+
+        tr
+        td GET
+        td api/findflights/:departureAirport/:arrivalAirport/:date
+        td {"Airline":"xxx","price":"xxx","flightId":"xxx","takeOffdate":"xxx","landingDate":"xxx","departure":"xxx", "destination":"xxx", "seats":"xxx", "availSeats":"xxx", "bookingCode":"xxx"}]
+        td api/CPH/MAD/07-05-2015 returns all flights matching the parameters
+
+    tbody

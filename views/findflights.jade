@@ -1,0 +1,13 @@
+extends layout
+block content
+    h1 Find a Flight
+    br
+    form(method="post")
+        div
+        input(name="departAir" placeholder="Departure")
+        br
+        input(name="landingAir" placeholder="Arrival")
+        br
+        input(name="date" placeholder="Date")
+        br
+        input(type='submit',value='Search',data-transition='fade', data-theme='c')

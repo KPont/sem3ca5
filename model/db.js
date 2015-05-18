@@ -43,24 +43,8 @@ var UserSchema = new mongoose.Schema({
     password: String
 });
 
-var QuoteSchema = new mongoose.Schema({
-    topic: String,
-    author: String,
-    reference: String,
-    quote: String
-});
-
-var RemoteServerSchema = new mongoose.Schema({
-    url: String,
-    topics: Array,
-    authors: Array
-});
 
 var User = mongoose.model('User', UserSchema);
-var Quote = mongoose.model('Quote', QuoteSchema);
-var RemoteServer = mongoose.model('RemoteServer', RemoteServerSchema);
 
-
-exports.Quote = Quote;
 exports.User = User;
-exports.RemoteServer = RemoteServer;
+

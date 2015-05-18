@@ -34,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/api', api)
 
+
 app.use(function(req, res, next){
     var newFName = req.body.createFirstName;
     var newLName = req.body.createLastName;
@@ -42,8 +43,17 @@ app.use(function(req, res, next){
     var newUser = req.body.createUserName;
     var newPw = req.body.createPassword;
     console.log(newEmail);
-    facade.createUser({"firstName" : newFName, "lastName" : newLName, "userName" : newUser, "email" : newEmail, "phone" : newPhone, "password" : newPw });
-    req.url = "/"; //Forward to login page
+    if(typeof(newFName) !== "undefined"){
+        facade.createUser({"firstName" : newFName, "lastName" : newLName, "userName" : newUser, "email" : newEmail, "phone" : newPhone, "password" : newPw });
+        res.redirect("/api/home");
+        return next();
+    }
+
+    if (typeof req.body.departAir !== "undefined") {
+        res.redirect("/api/findflights" + "/" + req.body.departAir + "/" + req.body.landingAir + "/" + req.body.date);
+        return next();
+    }
+
     return next();
 });
 

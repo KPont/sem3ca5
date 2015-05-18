@@ -7,8 +7,9 @@ var router = express.Router();
 
 var path = __dirname.substr(0,__dirname.lastIndexOf("\\"));  //Remove the routes part
 
+
 router.get('/home', function(req, res) {
-    res.render('home',{quote: {"quote" : "A clear conscience is usually the sign of a bad memory", "author"  :  "Unknown", category: "general"}});
+    res.render('home');
 });
 
 router.get('/user', function(req, res) {
@@ -19,16 +20,27 @@ router.get('/login', function(req, res, next) {
     res.render('login', {loginerror : req.session.loginerror});
 });
 
-router.get('/documentation', function(req, res, next) {
-    res.render('documentation');
+router.get('/findflights', function(req, res, next) {
+    res.render('findflights');
 });
 
-router.get('/quote', function(req, res, next) {
-        res.json(facade.getAllTopics);
+router.get('/findflights/:departAir/:landingAir/:date', function(req, res, next) {
+    facade.getFlight(req.params.departAir, req.params.landingAir, req.params.date, function(data){
+        res.json(data);
+    });
 });
 
-router.get('/quote/', function(req, res, next){
-        res.render('viewquotes');
+router.get('/allflights', function(req, res, next) {
+        facade.getAllFlights(function(data){
+            res.json(data);
+        });
+});
+
+
+router.get('/jadeB/', function(req, res, next){
+        facade.getFlight(req.body.departAir, req.body.landingAir, req.body.date, function(data){
+            res.json(data);
+        });
 });
 
 router.get('/quote/:topic', function(req, res) {
